@@ -16,9 +16,11 @@
 
 <body>
 
-    <script src="three.min.js"></script>
+    <script src="three.js"></script>
+    <script src="../libs/Detector.js"></script>
     <script src="../libs/stats.min.js"></script>
     <script>
+        if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
         var camera, scene, renderer;
         var mesh;
         /**
@@ -45,9 +47,7 @@
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
 
-            renderer = new THREE.WebGLRenderer({
-                alpha: true
-            });
+            renderer = new THREE.WebGLRenderer();
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
@@ -68,14 +68,14 @@
         }
 
         function animate() {
-            stats.begin();
+            //stats.begin();
             requestAnimationFrame(animate);
 
             mesh.rotation.x += 0.01;
             mesh.rotation.y += 0.01;
 
             renderer.render(scene, camera);
-            stats.end();
+            stats.update();
         }
         document.addEventListener('DOMContentLoaded', function() {
             init();

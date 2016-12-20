@@ -5,7 +5,8 @@ Displaying just a box in a 3d world, turning on himself
 
 Frameworks :
 
-- [three.js](https://threejs.org/) | [bench](./threejs)
+- [three.js](https://threejs.org/) :
+    [Bench](./threejs)
 - [PlayCanvas](https://playcanvas.com/)
 - [Turbulenz](http://biz.turbulenz.com/developers)
 - [Construct 2](https://www.scirra.com/construct2)

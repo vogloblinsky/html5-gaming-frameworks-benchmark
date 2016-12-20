@@ -7,6 +7,7 @@ Frameworks :
 
 - [three.js](https://threejs.org/) :
     [Bench](./threejs)
-- [PlayCanvas](https://playcanvas.com/)
+- [PlayCanvas](https://playcanvas.com/) :
+    [Bench](./playcanvas)
 - [Turbulenz](http://biz.turbulenz.com/developers)
 - [Construct 2](https://www.scirra.com/construct2)

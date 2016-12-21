@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Babylon - Getting Started</title>
+    <!--- link to the last version of babylon --->
+    <script src="babylon.2.5.js"></script>
+    <style>
+        html, body {
+            overflow: hidden;
+            width   : 100%;
+            height  : 100%;
+            margin  : 0;
+            padding : 0;
+        }
+
+        #renderCanvas {
+            width   : 100%;
+            height  : 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script src="../libs/performance.js"></script>
+    <script src="../libs/stats.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function(){
+            var stats = new Stats();
+            stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+            document.body.appendChild(stats.dom);
+
+            var canvas = document.getElementById('renderCanvas'),
+
+                angle = 0.01,
+
+                engine = new BABYLON.Engine(canvas, true),
+
+                box = null;
+
+            // createScene function that creates and return the scene
+            var createScene = function(){
+                // create a basic BJS Scene object
+                var scene = new BABYLON.Scene(engine);
+
+                // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
+                var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), scene);
+
+                // target the camera to scene origin
+                camera.setTarget(BABYLON.Vector3.Zero());
+
+                // attach the camera to the canvas
+                camera.attachControl(canvas, false);
+
+                // create a basic light, aiming 0,1,0 - meaning, to the sky
+                var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
+
+                var materialBox = new BABYLON.StandardMaterial("texture3", scene);
+                materialBox.diffuseTexture = new BABYLON.Texture("../textures/crate.gif", scene);
+
+                box = BABYLON.Mesh.CreateBox("box", 3.0, scene);
+
+                box.material = materialBox;
+
+                // return the created scene
+                return scene;
+            }
+
+            // call the createScene function
+            var scene = createScene();
+
+            // run the render loop
+            engine.runRenderLoop(function(){
+                box.rotation.x += angle;
+                box.rotation.y += angle;
+                scene.render();
+                stats.update();
+            });
+
+            // the canvas/window resize event handler
+            window.addEventListener('resize', function(){
+                engine.resize();
+            });
+        });
+    </script>
+</body>
+</html>

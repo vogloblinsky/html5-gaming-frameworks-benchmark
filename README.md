@@ -1,7 +1,7 @@
 # html5-gaming-frameworks-benchmark
 Benchmarks of HTML5 gaming frameworks on mobile
 
-###1. Displaying just a spinning box in a 3d world
+### 1. Displaying just a spinning box in a 3d world
 
 Frameworks :
 
@@ -14,7 +14,7 @@ Frameworks :
 - [Turbulenz](http://biz.turbulenz.com/developers)
 - [Construct 2](https://www.scirra.com/construct2)
 
-###2. Displaying just a falling box in a 3d world
+### 2. Displaying just a falling box in a 3d world
 
 Frameworks :
 

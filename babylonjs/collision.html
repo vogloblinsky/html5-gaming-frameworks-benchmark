@@ -27,8 +27,7 @@
         <canvas id="renderCanvas"></canvas>
         <script src="../libs/performance.js"></script>
         <script src="../libs/stats.min.js"></script>
-        <script src="babylon.2.5.js"></script>
-        <script src="cannon.js"></script>
+        <script src="babylon.custom.js"></script>
         <script>
             window.addEventListener('DOMContentLoaded', function() {
                 var stats = new Stats();
@@ -38,12 +37,12 @@
                 var canvas = document.getElementById('renderCanvas'),
                     angle = 0.01,
                     engine = new BABYLON.Engine(canvas, true),
-                    sphere = null,
+                    box = null,
                     ground = null;
 
                 var createScene = function() {
                         var scene = new BABYLON.Scene(engine),
-                            camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 8, -20), scene);
+                            camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 12, -10), scene);
 
                         camera.setTarget(BABYLON.Vector3.Zero());
                         camera.attachControl(canvas, true);
@@ -51,15 +50,23 @@
                         var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
                         light.intensity = 0.7;
 
-                        sphere = BABYLON.Mesh.CreateBox("sphere1", 2, scene);
+                        box = BABYLON.Mesh.CreateBox("box", 2, scene);
 
                         var materialBox = new BABYLON.StandardMaterial("texture3", scene);
                         materialBox.diffuseTexture = new BABYLON.Texture("../textures/crate.gif", scene);
 
-                        sphere.material = materialBox;
-                        sphere.position.y = 5;
+                        box.material = materialBox;
+                        box.position.y = 5;
+                        box.rotation.x = 15;
+                        box.rotation.y = 15;
 
-                        ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
+                        scene.collisionsEnabled = true;
+
+                        scene.workerCollisions = true;
+
+                        ground = BABYLON.Mesh.CreateGround("ground1", 8, 8, 2, scene);
+
+                        var postProcess = new BABYLON.FxaaPostProcess("fxaa", 1.0, camera);
 
                         return scene;
                 }
@@ -72,8 +79,16 @@
                 });
 
                 setTimeout(function() {
-                    scene.enablePhysics();
-                    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 0.9, friction: .7 }, scene);
+                    scene.enablePhysics(undefined);
+                    box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, {
+                        mass: 5,
+                        restitution: 0.6,
+                        friction: .5,
+                        nativeOptions: {
+                            noSleep: true,
+                            move: true
+                        }
+                    }, scene);
                     ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9, friction: .7 }, scene);
                 }, 3000);
 
